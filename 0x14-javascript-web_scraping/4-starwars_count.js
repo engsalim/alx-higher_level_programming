@@ -1,13 +1,18 @@
 #!/usr/bin/node
-
 const request = require('request');
-
-request(process.argv[2], function (error, response, body) {
- if (error) {
-  console.error(error);
- }
- const nb = JSON.parse(body).results.filter((elem) => {
-  return elem.characters.filter((url) => { return url.includes('18'); }).length;
- }).length;
- console.log(nb);
+request.get(process.argv[2], function (err, response, body) {
+  if (err) {
+    throw err;
+  } else if (response.statusCode === 200) {
+    const films = JSON.parse(body).results;
+    let count = 0;
+    for (let film of films) {
+      for (let char of film.characters) {
+        if (char.endsWith('18/')) {
+          count++;
+        }
+      }
+    }
+    console.log(count);
+  }
 });
