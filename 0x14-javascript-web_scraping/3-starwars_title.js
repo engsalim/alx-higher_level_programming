@@ -1,10 +1,11 @@
 #!/usr/bin/node
-
-const request = require('request');
-
-request('http://swapi.co/api/films/' + process.argv[2], function (error, response, body) {
- if (error) {
-  console.error(error);
- }
- console.log(JSON.parse(body).title);
-});
+const argv = process.argv;
+const axios = require('axios').default;
+const apii = 'https://swapi-api.hbtn.io/api/films/'.concat(argv[2]);
+axios.get(apii)
+  .then(function (response) {
+    console.log(response.data.title);
+  })
+  .catch(function (error) {
+    console.log(error.response.status);
+  });
